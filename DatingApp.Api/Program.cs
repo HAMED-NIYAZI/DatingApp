@@ -22,6 +22,9 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
            .AllowAnyMethod()
            .AllowAnyHeader();
 }));
+//builder.Services.AddCors();
+// End Of Add Cors
+
 
 
 
@@ -45,6 +48,8 @@ app.UseAuthorization();
 
 // Enable Cors
 app.UseCors("MyPolicy");
+//app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7235/"));
+
 
 app.MapControllers();
 

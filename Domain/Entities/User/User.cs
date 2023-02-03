@@ -28,5 +28,19 @@ namespace Domain.Entities.User
         [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
         [MaxLength(350, ErrorMessage = "حداکثر کاراکتر مجاز {1} می باشد")]
         public string Password { get; set; }
+
+        [Display(Name = "شماره موبایل")]
+        [MaxLength(11, ErrorMessage = "حداکثر کاراکتر مجاز {1} می باشد")]
+        public string? Mobile { get; set; }
+
+        [Display(Name = "آواتار")]
+        [MaxLength(50, ErrorMessage = "حداکثر کاراکتر مجاز {1} می باشد")]
+        public string Avatar { get; set; }
+
+        [Display(Name = "ایمیل فعال باشد؟")]
+        public bool IsEmailActive { get; set; }
+
+        [Display(Name = "تاریخ ثبت نام")]
+        public DateTime RegisterDate { get; set; }
     }
 }
