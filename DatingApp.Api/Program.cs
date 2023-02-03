@@ -1,4 +1,5 @@
 ﻿using Data.Context;
+using IOC.Dependencies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddDbContext<DatingAppContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DatingAppConnectionString"));
 });
 
+//اضافه کردن سرویس ها
+builder.Services.RegisterServices();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
