@@ -16,17 +16,40 @@ namespace Data.Repositories
 
         public UserRepository(DatingAppContext dbContext)
         {
-            _dbContext= dbContext;
+            _dbContext = dbContext;
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return  await _dbContext.Users.ToListAsync();
+            return await _dbContext.Users.ToListAsync();
         }
 
         public async Task<User?> GetUserByUserIdAsync(int userId)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
+
+        public async Task<bool> CkeckExistingEmailAsync(string email)
+        {
+            return await _dbContext.Users.AnyAsync(u => u.Email == email);
+        }
+
+        public async Task InsertUserAsync(User user)
+        {
+            await _dbContext.Users.AddAsync(user);
+        }
+        public async Task<User?> GetUserByEmailAndPasswordAsync(string email, string password)
+        {
+
+            return await _dbContext.Users.FirstOrDefaultAsync(u=>u.Email==email && u.Password==password);
+        
+        }
+
+        public async Task SaveChangesAsync() 
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
+
     }
 }

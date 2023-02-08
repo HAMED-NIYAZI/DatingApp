@@ -20,4 +20,13 @@ namespace Domain.DTOs.Account
         [MaxLength(350, ErrorMessage = "حداکثر کاراکتر مجاز {1} می باشد")]
         public string Password { get; set; }
     }
+
+    public enum LoginResult
+    {
+        Success,
+        Error,
+        UserNotFound,
+        EmailNotActive
+
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Entities.User;
+﻿using Domain.DTOs.Account;
+using Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,18 @@ namespace Application.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetAllUsersAsync();
+        #region Account
+
+        Task<RegisterResult> RegisterUserAsync(RegisterDto registerDto);
+        Task<LoginResult> LoginUserAsync(LoginDto loginDto);
+
+        #endregion
+
+        #region User
+
         Task<User?> GetUserByUserIdAsync(int userId);
+        Task<IEnumerable<User>> GetAllUsersAsync();
+
+        #endregion
     }
 }

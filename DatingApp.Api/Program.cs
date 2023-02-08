@@ -1,4 +1,6 @@
 ﻿using Data.Context;
+using DatingApp.Api.Services.Implementation;
+using DatingApp.Api.Services.Interface;
 using IOC.Dependencies;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +13,7 @@ builder.Services.AddDbContext<DatingAppContext>(options => {
 });
 
 //اضافه کردن سرویس ها
+builder.Services.AddScoped<ITokenService,TokenService>();
 builder.Services.RegisterServices();
 
 

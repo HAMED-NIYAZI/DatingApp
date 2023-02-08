@@ -27,4 +27,10 @@ namespace Domain.DTOs.Account
         public string ConfirmPassword { get; set; }
 
     }
+    public enum RegisterResult
+    { 
+        Success,
+        Error,
+        EmailIsExist
+    }
 }

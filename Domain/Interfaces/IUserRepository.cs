@@ -1,4 +1,5 @@
-﻿using Domain.Entities.User;
+﻿using Domain.DTOs.Account;
+using Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,13 @@ namespace Domain.Interfaces
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User?> GetUserByUserIdAsync(int userId);
+        Task<bool> CkeckExistingEmailAsync(string  email);
+
+        Task InsertUserAsync(User user);
+
+        Task<User?> GetUserByEmailAndPasswordAsync(string email,string password);
+
+        Task SaveChangesAsync();
 
 
     }
