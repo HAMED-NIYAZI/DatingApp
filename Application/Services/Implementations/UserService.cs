@@ -90,5 +90,8 @@ namespace Application.Services.Implementations
 
             return LoginResult.Success;
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email) 
+            => await _userRepository.GetUserByEmailAsync(email);
     }
 }

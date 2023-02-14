@@ -1,5 +1,9 @@
 ﻿using Application.Services.Interfaces;
+using DatingApp.Api.Services.Interface;
 using Domain.DTOs.Account;
+using Domain.DTOs.Account.User;
+using Domain.DTOs.Common;
+using Domain.Entities.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -12,10 +16,12 @@ namespace DatingApp.Api.Controllers
     {
         #region  ctor
         private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService,ITokenService tokenService)
         {
             _userService = userService;
+            _tokenService = tokenService;
         }
         #endregion
 
@@ -29,8 +35,16 @@ namespace DatingApp.Api.Controllers
             switch (res)
             {
                 case LoginResult.Success:
-                    message = "Success";
-                    break;
+                    var user=await _userService.GetUserByEmailAsync(loginDto.Email);
+                    if (user is null)
+                        return new JsonResult(new ResponseResult(false,"Account Doesn't Exists"));
+                    
+                    return new JsonResult(new ResponseResult(true,"Lodged in successfully",new UserDto 
+                    {
+                       UserName=user.UserName,
+                       Token=_tokenService.CreateToken(user),
+                    }));
+                     break;
                 case LoginResult.Error:
                     message = "Error";
                     break;
@@ -76,9 +90,15 @@ namespace DatingApp.Api.Controllers
             switch (res)
             {
                 case RegisterResult.Success:
-                    //TempData["SuccessMessage"] = "";
-                  //  TempData["name"] = "Bill";
-                    break;
+                    var user = await _userService.GetUserByEmailAsync(registerDto.Email);
+                    if (user is null)
+                        return new JsonResult(new ResponseResult(false, "Account Doesn't Exists"));
+                    return new JsonResult(new ResponseResult(true, "Account Created Successfully", new UserDto
+                    {
+                        UserName = user.UserName,
+                        Token = _tokenService.CreateToken(user),
+                    }));
+ 
                 case RegisterResult.Error:
                     break;
                 case RegisterResult.EmailIsExist:

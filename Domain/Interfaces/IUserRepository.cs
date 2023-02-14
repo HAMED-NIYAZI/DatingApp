@@ -17,8 +17,9 @@ namespace Domain.Interfaces
         Task InsertUserAsync(User user);
 
         Task<User?> GetUserByEmailAndPasswordAsync(string email,string password);
-
         Task SaveChangesAsync();
+
+        Task<User?> GetUserByEmailAsync(string email);
 
 
     }

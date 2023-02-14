@@ -50,6 +50,9 @@ namespace Data.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace Application.Services.Interfaces
         Task<User?> GetUserByUserIdAsync(int userId);
         Task<IEnumerable<User>> GetAllUsersAsync();
 
+        Task<User?> GetUserByEmailAsync(string email);
         #endregion
     }
 }
