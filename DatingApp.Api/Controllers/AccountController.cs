@@ -6,8 +6,7 @@ using Domain.DTOs.Common;
 using Domain.Entities.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
- 
+
 
 namespace DatingApp.Api.Controllers
 {
@@ -18,7 +17,7 @@ namespace DatingApp.Api.Controllers
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
 
-        public AccountController(IUserService userService,ITokenService tokenService)
+        public AccountController(IUserService userService, ITokenService tokenService)
         {
             _userService = userService;
             _tokenService = tokenService;
@@ -30,30 +29,27 @@ namespace DatingApp.Api.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            LoginResult res=await _userService.LoginUserAsync(loginDto);
+            LoginResult res = await _userService.LoginUserAsync(loginDto);
             string message = "";
             switch (res)
             {
                 case LoginResult.Success:
-                    var user=await _userService.GetUserByEmailAsync(loginDto.Email);
+                    var user = await _userService.GetUserByEmailAsync(loginDto.Email);
                     if (user is null)
-                        return new JsonResult(new ResponseResult(false,"Account Doesn't Exists"));
-                    
-                    return new JsonResult(new ResponseResult(true,"Lodged in successfully",new UserDto 
+                        return new JsonResult(new ResponseResult(false, "Account Doesn't Exists"));
+
+                    return new JsonResult(new ResponseResult(true, "Lodged in successfully", new UserDto
                     {
-                       UserName=user.UserName,
-                       Token=_tokenService.CreateToken(user),
+                        UserName = user.UserName,
+                        Token = _tokenService.CreateToken(user),
                     }));
-                     break;
+                    break;
                 case LoginResult.Error:
-                    message = "Error";
-                    break;
+                    return new JsonResult(new ResponseResult(false, "An Error Occurred"));
                 case LoginResult.UserNotFound:
-                    message = "UserNotFound";
-                    break;
+                    return new JsonResult(new ResponseResult(false, "User Doesn't Exists."));
                 case LoginResult.EmailNotActive:
-                    message = "EmailNotActive";
-                    break;
+                    return new JsonResult(new ResponseResult(false, "Account Is not Active."));
                 default:
                     break;
             }
@@ -71,12 +67,17 @@ namespace DatingApp.Api.Controllers
             #region Validation
 
             if (!ModelState.IsValid)
-            { 
-            List<string> strings= new List<string>();
-                //foreach (var modelErrors in ModelState.Va)
-                //{
+            {
+                List<string> errors = new List<string>();
+                foreach (var modelError in ModelState.Values)
+                {
+                    foreach (var error in modelError.Errors)
+                    {
+                        errors.Add(error.ErrorMessage);
+                    }
+                }
 
-                //}
+                return new JsonResult(new ResponseResult(false, "", errors));
             }
 
 
@@ -85,7 +86,7 @@ namespace DatingApp.Api.Controllers
             #endregion
 
 
-          RegisterResult res= await _userService.RegisterUserAsync(registerDto);
+            RegisterResult res = await _userService.RegisterUserAsync(registerDto);
 
             switch (res)
             {
@@ -98,11 +99,11 @@ namespace DatingApp.Api.Controllers
                         UserName = user.UserName,
                         Token = _tokenService.CreateToken(user),
                     }));
- 
+
                 case RegisterResult.Error:
-                    break;
+                    return new JsonResult(new ResponseResult(false, "An Error Occurred."));
                 case RegisterResult.EmailIsExist:
-                    break;
+                    return new JsonResult(new ResponseResult(false,"This Email Already Exists."));
                 default:
                     break;
             }
