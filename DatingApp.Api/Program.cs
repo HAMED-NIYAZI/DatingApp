@@ -2,7 +2,11 @@
 using DatingApp.Api.Services.Implementation;
 using DatingApp.Api.Services.Interface;
 using IOC.Dependencies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +32,19 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 //builder.Services.AddCors();
 // End Of Add Cors
 
-
+//Add Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options=>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("TokenKey").ToString())),
+            ValidateIssuer=true,
+            ValidateAudience=false
+        };
+    }
+    );
 
 
 builder.Services.AddControllers();
@@ -46,6 +62,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+
+
+//Add Authentication
+app.UseAuthentication();
 
 app.UseAuthorization();
 

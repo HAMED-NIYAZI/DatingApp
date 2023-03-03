@@ -30,7 +30,6 @@ namespace DatingApp.Api.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             LoginResult res = await _userService.LoginUserAsync(loginDto);
-            string message = "";
             switch (res)
             {
                 case LoginResult.Success:
@@ -43,8 +42,7 @@ namespace DatingApp.Api.Controllers
                         UserName = user.UserName,
                         Token = _tokenService.CreateToken(user),
                     }));
-                    break;
-                case LoginResult.Error:
+                 case LoginResult.Error:
                     return new JsonResult(new ResponseResult(false, "An Error Occurred"));
                 case LoginResult.UserNotFound:
                     return new JsonResult(new ResponseResult(false, "User Doesn't Exists."));
@@ -115,10 +113,10 @@ namespace DatingApp.Api.Controllers
         #region  ForgotPassword
 
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        public async  Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
 
-            return Ok();
+            return   Ok();
 
         }
         #endregion
