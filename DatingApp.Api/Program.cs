@@ -1,4 +1,5 @@
 ﻿using Data.Context;
+using DatingApp.Api.Extensions;
 using DatingApp.Api.Services.Implementation;
 using DatingApp.Api.Services.Interface;
 using IOC.Dependencies;
@@ -11,14 +12,13 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//اضافه کردن کانتکست
-builder.Services.AddDbContext<DatingAppContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DatingAppConnectionString"));
-});
-
 //اضافه کردن سرویس ها
-builder.Services.AddScoped<ITokenService,TokenService>();
+
 builder.Services.RegisterServices();
+builder.Services.AddApplicationService(builder.Configuration);
+
+
+
 
 
 
@@ -32,19 +32,6 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 //builder.Services.AddCors();
 // End Of Add Cors
 
-//Add Authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options=>
-    {
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("TokenKey").ToString())),
-            ValidateIssuer=true,
-            ValidateAudience=false
-        };
-    }
-    );
 
 
 builder.Services.AddControllers();
