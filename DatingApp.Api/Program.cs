@@ -25,7 +25,7 @@ builder.Services.AddApplicationService(builder.Configuration);
 // Add Cors
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
-    builder.AllowAnyOrigin()
+    builder.AllowAnyOrigin()//addresses that can call this apis   .AllowAnyOrigin("http://site:5466")
            .AllowAnyMethod()
            .AllowAnyHeader();
 }));

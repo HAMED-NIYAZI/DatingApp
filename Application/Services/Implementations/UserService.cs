@@ -18,7 +18,7 @@ namespace Application.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHelper _passwordHelper;
         private readonly ISendMail _sendMail;
-       // private readonly IViewRender _viewRender;
+        // private readonly IViewRender _viewRender;
         public UserService(IUserRepository userRepository, IPasswordHelper passwordHelper,
            /* IViewRender viewRender,*/ ISendMail sendMail)
         {
@@ -43,28 +43,33 @@ namespace Application.Services.Implementations
 
         public async Task<RegisterResult> RegisterUserAsync(RegisterDto registerDto)
         {
-            #region
+
+
+            #region validation
             if (await _userRepository.CkeckExistingEmailAsync(registerDto.Email))
                 return RegisterResult.EmailIsExist;
 
-            #endregion
+            #endregion validation
 
+            #region set Properites
             var user = new User
             {
-                Email = registerDto.Email,
+                Email = registerDto.Email.ToLower().Trim(),
                 Avatar = "Default.png",
                 IsEmailActive = false,
                 Mobile = null,
                 Password = _passwordHelper.EncodePasswordMd5(registerDto.Password),
                 RegisterDate = DateTime.Now,
-                UserName = registerDto.Email.Split('@')[0]
+                UserName = registerDto.Email.ToLower().Trim().Split('@')[0]
             };
+
+            #endregion   set Properites
+
             #region InserUser
 
             await _userRepository.InsertUserAsync(user);
             await _userRepository.SaveChangesAsync();
-            #endregion
-
+            #endregion InserUser
 
             #region Send Email
 
@@ -79,9 +84,13 @@ namespace Application.Services.Implementations
             try
             {
                 var hashpassword = _passwordHelper.EncodePasswordMd5(loginDto.Password);
-                User? user = await _userRepository.GetUserByEmailAndPasswordAsync(loginDto.Email, hashpassword);
+                User? user = await _userRepository.GetUserByEmailAndPasswordAsync(loginDto.Email.ToLower().Trim(), hashpassword);
+
+                #region validation
                 if (user is null) return LoginResult.UserNotFound;
                 if (!user.IsEmailActive) return LoginResult.EmailNotActive;
+                #endregion validation
+
             }
             catch (Exception)
             {
@@ -91,7 +100,7 @@ namespace Application.Services.Implementations
             return LoginResult.Success;
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email) 
+        public async Task<User?> GetUserByEmailAsync(string email)
             => await _userRepository.GetUserByEmailAsync(email);
     }
 }

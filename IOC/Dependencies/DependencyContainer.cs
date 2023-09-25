@@ -6,11 +6,6 @@ using Application.Services.Interfaces;
 using Data.Repositories;
 using Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IOC.Dependencies
 {
@@ -21,7 +16,7 @@ namespace IOC.Dependencies
             #region Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISendMail, SendMail>();
-         //   services.AddScoped<IViewRender, RenderViewToString>();
+            services.AddScoped<IViewRender, RenderViewToString>();
             services.AddScoped<IPasswordHelper, PasswordHelper>();
             #endregion
 

@@ -37,7 +37,7 @@ namespace DatingApp.Api.Controllers
                     if (user is null)
                         return new JsonResult(new ResponseResult(false, "Account Doesn't Exists"));
 
-                    return new JsonResult(new ResponseResult(true, "Lodged in successfully", new UserDto
+                    return new JsonResult(new ResponseResult(true, "Loged in successfully", new UserDto
                     {
                         UserName = user.UserName,
                         Token = _tokenService.CreateToken(user),
@@ -78,10 +78,7 @@ namespace DatingApp.Api.Controllers
                 return new JsonResult(new ResponseResult(false, "", errors));
             }
 
-
-
-
-            #endregion
+            #endregion Validation
 
 
             RegisterResult res = await _userService.RegisterUserAsync(registerDto);
