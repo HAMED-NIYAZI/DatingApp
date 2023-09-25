@@ -16,7 +16,7 @@ namespace IOC.Dependencies
             #region Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISendMail, SendMail>();
-            services.AddScoped<IViewRender, RenderViewToString>();
+           // services.AddScoped<IViewRender, RenderViewToString>();
             services.AddScoped<IPasswordHelper, PasswordHelper>();
             #endregion
 

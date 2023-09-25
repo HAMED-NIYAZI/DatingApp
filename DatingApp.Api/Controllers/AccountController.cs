@@ -33,7 +33,7 @@ namespace DatingApp.Api.Controllers
             switch (res)
             {
                 case LoginResult.Success:
-                    var user = await _userService.GetUserByEmailAsync(loginDto.Email);
+                    var user = await _userService.GetUserByEmailAsync (loginDto.Email);
                     if (user is null)
                         return new JsonResult(new ResponseResult(false, "Account Doesn't Exists"));
 
@@ -42,7 +42,7 @@ namespace DatingApp.Api.Controllers
                         UserName = user.UserName,
                         Token = _tokenService.CreateToken(user),
                     }));
-                 case LoginResult.Error:
+                case LoginResult.Error:
                     return new JsonResult(new ResponseResult(false, "An Error Occurred"));
                 case LoginResult.UserNotFound:
                     return new JsonResult(new ResponseResult(false, "User Doesn't Exists."));
@@ -68,14 +68,10 @@ namespace DatingApp.Api.Controllers
             {
                 List<string> errors = new List<string>();
                 foreach (var modelError in ModelState.Values)
-                {
                     foreach (var error in modelError.Errors)
-                    {
                         errors.Add(error.ErrorMessage);
-                    }
-                }
 
-                return new JsonResult(new ResponseResult(false, "", errors));
+                                return new JsonResult(new ResponseResult(false, "", errors));
             }
 
             #endregion Validation
@@ -98,11 +94,13 @@ namespace DatingApp.Api.Controllers
                 case RegisterResult.Error:
                     return new JsonResult(new ResponseResult(false, "An Error Occurred."));
                 case RegisterResult.EmailIsExist:
-                    return new JsonResult(new ResponseResult(false,"This Email Already Exists."));
+                    return new JsonResult(new ResponseResult(false, "This Email Already Exists."));
                 default:
                     break;
             }
-            return Ok();
+
+
+            return new JsonResult(new ResponseResult(false,"An Error Accurred."));
 
         }
         #endregion
@@ -110,10 +108,10 @@ namespace DatingApp.Api.Controllers
         #region  ForgotPassword
 
         [HttpPost("ForgotPassword")]
-        public async  Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
 
-            return   Ok();
+            return Ok();
 
         }
         #endregion

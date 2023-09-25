@@ -39,6 +39,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+#region add jwt AddAuthentication
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        { 
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("TokenKey").ToString())),
+            ValidateIssuer=true,
+            ValidateAudience=false
+        };
+    });
+#endregion add jwt AddAuthentication
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -16,6 +16,7 @@ namespace DatingApp.Api.Extensions
             });
 
             services.AddScoped<ITokenService, TokenService>();
+
             return services;
         }
     }
