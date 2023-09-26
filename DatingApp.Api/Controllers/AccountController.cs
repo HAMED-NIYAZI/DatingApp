@@ -4,6 +4,7 @@ using Domain.DTOs.Account;
 using Domain.DTOs.Account.User;
 using Domain.DTOs.Common;
 using Domain.Entities.User;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -111,8 +112,8 @@ namespace DatingApp.Api.Controllers
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
 
-            return Ok();
-
+            await HttpContext.SignOutAsync();
+            return new JsonResult(new ResponseResult(true, "Logout was successful."));
         }
         #endregion
     }
