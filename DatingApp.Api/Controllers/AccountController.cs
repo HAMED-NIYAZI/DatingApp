@@ -111,7 +111,15 @@ namespace DatingApp.Api.Controllers
         [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
+            return Ok();
+        }
+        #endregion
 
+        #region  LogOut
+
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> Logout(ForgotPasswordDto forgotPasswordDto)
+        {
             await HttpContext.SignOutAsync();
             return new JsonResult(new ResponseResult(true, "Logout was successful."));
         }
