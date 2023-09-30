@@ -1,4 +1,5 @@
-﻿using Domain.Entities.User;
+﻿using Domain.Entities.Photo;
+using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,6 @@ namespace Data.Context
 
         //dbsets
         public DbSet<User> Users { get; set; }
+        public DbSet<Photo> Photos { get; set; }
     }
 }
