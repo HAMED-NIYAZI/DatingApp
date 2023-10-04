@@ -1,4 +1,5 @@
 ﻿using Domain.DTOs.Account;
+using Domain.DTOs.Account.User;
 using Domain.Entities.User;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Application.Services.Interfaces
         #region Account
 
         Task<RegisterResult> RegisterUserAsync(RegisterDto registerDto);
+
         Task<LoginResult> LoginUserAsync(LoginDto loginDto);
 
         #endregion
@@ -20,9 +22,15 @@ namespace Application.Services.Interfaces
         #region User
 
         Task<User?> GetUserByUserIdAsync(int userId);
+
         Task<IEnumerable<User>> GetAllUsersAsync();
 
         Task<User?> GetUserByEmailAsync(string email);
+
+        Task<List<MemberDto>> GetAllUserInformationAsync();
+        
+        Task<MemberDto> GetUserInformationAsync(string userName);
+
         #endregion
     }
 }

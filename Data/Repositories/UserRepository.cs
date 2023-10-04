@@ -54,5 +54,10 @@ namespace Data.Repositories
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public async Task<User?> GetAsync(string userName)
+        {
+            return   await _dbContext.Users.FirstOrDefaultAsync(u=>u.UserName==userName);
+        }
     }
 }

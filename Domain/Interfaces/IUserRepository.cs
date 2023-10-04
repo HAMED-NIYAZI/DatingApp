@@ -20,6 +20,8 @@ namespace Domain.Interfaces
         Task SaveChangesAsync();
 
         Task<User?> GetUserByEmailAsync(string email);
+        Task<User?> GetAsync(string userName);
+
 
 
     }
