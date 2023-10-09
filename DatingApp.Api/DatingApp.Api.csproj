@@ -25,4 +25,8 @@
     <None Include="wwwroot\assets\Images\Avatars\messi.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\Images\Photos\" />
+  </ItemGroup>
+
 </Project>

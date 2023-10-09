@@ -210,7 +210,7 @@ namespace Application.Services.Implementations
                 u.LookingFor = user.LookingFor;
                 u.Mobile = user.Mobile;
                 u.RegisterDate = user.RegisterDate;
-                u.Photos = user.Photos?.Select(p => new PhotoDto() { Id = p.Id, IsMain = p.IsMain, Url = p.Url }).ToList();
+                u.Photos = user.Photos?.Select(p => new PhotoDto() { Id = p.Id, IsMain = p.IsMain, Url = _configuration.GetSection("PhotosUrl").Value.ToString()+p.Url }).ToList();
 
                 return u;
             }
