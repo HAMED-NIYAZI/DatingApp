@@ -66,6 +66,8 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+//static files middle ware
+app.UseStaticFiles();
 // Enable Cors
 app.UseCors("MyPolicy");
 //app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7235/"));

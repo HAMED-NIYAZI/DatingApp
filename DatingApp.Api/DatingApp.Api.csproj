@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="assets\Images\Avatars\" />
+    <None Include="wwwroot\assets\Images\Avatars\Default.png" />
+    <None Include="wwwroot\assets\Images\Avatars\jsonstatam.jpg" />
+    <None Include="wwwroot\assets\Images\Avatars\messi.jpg" />
   </ItemGroup>
 
 </Project>

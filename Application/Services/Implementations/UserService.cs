@@ -30,12 +30,13 @@ namespace Application.Services.Implementations
         private readonly IConfiguration _configuration;
         // private readonly IViewRender _viewRender;
         public UserService(IUserRepository userRepository, IPasswordHelper passwordHelper,
-           /* IViewRender viewRender,*/ ISendMail sendMail)
+           /* IViewRender viewRender,*/ ISendMail sendMail , IConfiguration configuration)
         {
             _userRepository = userRepository;
             _passwordHelper = passwordHelper;
             //_viewRender = viewRender;
             _sendMail = sendMail;
+            _configuration = configuration;
         }
 
 
@@ -127,26 +128,7 @@ namespace Application.Services.Implementations
             try
             {
                 var users = await _userRepository.GetAllUsersAsync();
-                //return users.Select(u => new MemberDto()
-                //{
-                //    Id = u.Id,
-                //    UserName = u.UserName,
-                //    age = u.DateOfBirth.CalculateAge(),
-                //    Avatar = u.Avatar,
-                //    City = u.City,
-                //    Country = u.Country,
-                //    Email = u.Email,
-                //    Gender = u.Gender,
-                //    Intrests = u.Intrests,
-                //    Introduction = u.Introduction,
-                //    IsEmailActive = u.IsEmailActive,
-                //    KnownAs = u.KnownAs,
-                //    LookingFor = u.LookingFor,
-                //    Mobile = u.Mobile,
-                //    RegisterDate = u.RegisterDate,
-                //    Photos = u.Photos.Select(p => new PhotoDto() { Id = p.Id, IsMain = p.IsMain, Url = p.Url }).ToList()
 
-                //}).ToList();
 
                 foreach (var u in users)
                 {
@@ -178,7 +160,7 @@ namespace Application.Services.Implementations
                     Id = u.Id,
                     UserName = u.UserName,
                     age = u.DateOfBirth.CalculateAge(),
-                    Avatar = _configuration.GetConnectionString("AvatarUrl") + u.Avatar,
+                    Avatar = _configuration.GetSection("AvatarUrl").Value.ToString()+ (u.Avatar ?? "Default.png"),
                     City = u.City,
                     Country = u.Country,
                     Email = u.Email,
@@ -205,6 +187,7 @@ namespace Application.Services.Implementations
 
         public async Task<MemberDto> GetUserInformationAsync(string userName)
         {
+           // var s = _configuration.GetSection("AvatarUrl").Value.ToString();
             try
             {
                 var user = await _userRepository.GetAsync(userName);
@@ -215,8 +198,8 @@ namespace Application.Services.Implementations
                 u.Id = user.Id;
                 u.UserName = user.UserName;
                 u.age = user.DateOfBirth.CalculateAge();
-                u.Avatar = _configuration.GetConnectionString("AvatarUrl") + user.Avatar;
-                u.City = user.City;
+                u.Avatar =_configuration.GetSection("AvatarUrl").Value.ToString()+ (user.Avatar ?? "Default.png");
+                 u.City = user.City;
                 u.Country = user.Country;
                 u.Email = user.Email;
                 u.Gender = user.Gender;
