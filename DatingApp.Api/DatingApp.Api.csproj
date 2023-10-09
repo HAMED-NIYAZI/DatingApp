@@ -19,4 +19,8 @@
     <ProjectReference Include="..\IOC\IOC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="assets\Images\Avatars\" />
+  </ItemGroup>
+
 </Project>

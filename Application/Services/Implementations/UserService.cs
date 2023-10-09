@@ -10,6 +10,7 @@ using Domain.DTOs.Photo;
 using Domain.Entities.Photo;
 using Domain.Entities.User;
 using Domain.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -26,6 +27,7 @@ namespace Application.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHelper _passwordHelper;
         private readonly ISendMail _sendMail;
+        private readonly IConfiguration _configuration;
         // private readonly IViewRender _viewRender;
         public UserService(IUserRepository userRepository, IPasswordHelper passwordHelper,
            /* IViewRender viewRender,*/ ISendMail sendMail)
@@ -69,7 +71,7 @@ namespace Application.Services.Implementations
                     Password = _passwordHelper.EncodePasswordMd5(registerDto.Password),
                     RegisterDate = DateTime.Now,
                     UserName = registerDto.Email.ToLower().Trim().Split('@')[0]
-                    
+
                 };
 
                 #endregion   set Properites
@@ -149,7 +151,7 @@ namespace Application.Services.Implementations
                 foreach (var u in users)
                 {
 
-                    var user=new MemberDto();
+                    var user = new MemberDto();
                     user.Id = u.Id;
                     user.UserName = u.UserName;
                     user.age = u.DateOfBirth.CalculateAge();
@@ -171,12 +173,12 @@ namespace Application.Services.Implementations
 
 
 
-                 var res= users.Select(u => new MemberDto()
+                var res = users.Select(u => new MemberDto()
                 {
                     Id = u.Id,
                     UserName = u.UserName,
                     age = u.DateOfBirth.CalculateAge(),
-                    Avatar = u.Avatar,
+                    Avatar = _configuration.GetConnectionString("AvatarUrl") + u.Avatar,
                     City = u.City,
                     Country = u.Country,
                     Email = u.Email,
@@ -188,7 +190,7 @@ namespace Application.Services.Implementations
                     LookingFor = u.LookingFor,
                     Mobile = u.Mobile,
                     RegisterDate = u.RegisterDate,
-                    Photos =u.Photos ==null ? null: u.Photos.Select(p => new PhotoDto() { Id = p.Id, IsMain = p.IsMain, Url = p.Url }).ToList()
+                    Photos = u.Photos == null ? null : u.Photos.Select(p => new PhotoDto() { Id = p.Id, IsMain = p.IsMain, Url = p.Url }).ToList()
 
                 }).ToList();
                 return res;
@@ -203,28 +205,38 @@ namespace Application.Services.Implementations
 
         public async Task<MemberDto> GetUserInformationAsync(string userName)
         {
-            var user = await _userRepository.GetAsync(userName);
-      
+            try
+            {
+                var user = await _userRepository.GetAsync(userName);
 
-            return new MemberDto() {
-                Id = user.Id,
-                UserName = user.UserName,
-                age =  user.DateOfBirth.CalculateAge(),
- 
-                Avatar = user.Avatar,
-                City = user.City,
-                Country = user.Country,
-                Email = user.Email,
-                Gender = user.Gender,
-                Intrests = user.Intrests,
-                Introduction = user.Introduction,
-                IsEmailActive = user.IsEmailActive,
-                KnownAs = user.KnownAs,
-                LookingFor = user.LookingFor,
-                Mobile = user.Mobile,
-                RegisterDate = user.RegisterDate,
-                Photos = user.Photos.Select(p => new PhotoDto() { Id = p.Id, IsMain = p.IsMain, Url = p.Url }).ToList()
-            };
+                var u = new MemberDto();
+
+
+                u.Id = user.Id;
+                u.UserName = user.UserName;
+                u.age = user.DateOfBirth.CalculateAge();
+                u.Avatar = _configuration.GetConnectionString("AvatarUrl") + user.Avatar;
+                u.City = user.City;
+                u.Country = user.Country;
+                u.Email = user.Email;
+                u.Gender = user.Gender;
+                u.Intrests = user.Intrests;
+                u.Introduction = user.Introduction;
+                u.IsEmailActive = user.IsEmailActive;
+                u.KnownAs = user.KnownAs;
+                u.LookingFor = user.LookingFor;
+                u.Mobile = user.Mobile;
+                u.RegisterDate = user.RegisterDate;
+                u.Photos = user.Photos?.Select(p => new PhotoDto() { Id = p.Id, IsMain = p.IsMain, Url = p.Url }).ToList();
+
+                return u;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
     }
 }

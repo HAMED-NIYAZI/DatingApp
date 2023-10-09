@@ -57,7 +57,7 @@ namespace Data.Repositories
 
         public async Task<User?> GetAsync(string userName)
         {
-            return   await _dbContext.Users.FirstOrDefaultAsync(u=>u.UserName==userName);
+            return   await _dbContext.Users.Include(u=>u.Photos).FirstOrDefaultAsync(u=>u.UserName==userName);
         }
     }
 }
