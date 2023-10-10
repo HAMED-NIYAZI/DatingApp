@@ -41,11 +41,11 @@ namespace Data.Repositories
         public async Task<User?> GetUserByEmailAndPasswordAsync(string email, string password)
         {
 
-            return await _dbContext.Users.FirstOrDefaultAsync(u=>u.Email==email && u.Password==password);
-        
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+
         }
 
-        public async Task SaveChangesAsync() 
+        public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
         }
@@ -57,7 +57,12 @@ namespace Data.Repositories
 
         public async Task<User?> GetAsync(string userName)
         {
-            return   await _dbContext.Users.Include(u=>u.Photos).FirstOrDefaultAsync(u=>u.UserName==userName);
+            return await _dbContext.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.UserName == userName);
         }
+
+        public async void UpdateUser(User user)
+        {
+            _dbContext.Users.Update(user);
+         }
     }
 }

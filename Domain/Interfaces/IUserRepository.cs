@@ -22,7 +22,7 @@ namespace Domain.Interfaces
         Task<User?> GetUserByEmailAsync(string email);
         Task<User?> GetAsync(string userName);
 
-
+        void UpdateUser(User user);
 
     }
 }

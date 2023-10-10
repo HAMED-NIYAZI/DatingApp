@@ -31,6 +31,8 @@ namespace Application.Services.Interfaces
         
         Task<MemberDto> GetUserInformationAsync(string userName);
 
+        Task<bool> UpdateMember(UpdateMemberDto updateMemberDto,int userId);
+
         #endregion
     }
 }

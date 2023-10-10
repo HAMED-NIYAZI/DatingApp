@@ -27,22 +27,23 @@ namespace DatingApp.Api.Services.Implementation
         {
             var claim = new List<Claim> //لیستی از کلایم ها ست کردیم
             {
+                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
                 new Claim(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.NameId,user.UserName)
             };
 
 
             //با کی ای که در کانستراکتور ساخته ایم و الگوریتم یک کردنشیال ساختیم
-            var creds=new SigningCredentials(_key,SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             //یک سکیوریتی توکن دیسکریپتور ساختیم
             var tokenDescriptor = new SecurityTokenDescriptor()
-            { 
-            Subject = new ClaimsIdentity(claim), //کلایم را به موضوع زدیم
-            Expires = DateTime.Now.AddDays(7),//تعداد روز های اعتبار توکن
-            SigningCredentials = creds //کردنشیال بالا را در ساین این کردنشیال زدیم
+            {
+                Subject = new ClaimsIdentity(claim), //کلایم را به موضوع زدیم
+                Expires = DateTime.Now.AddDays(7),//تعداد روز های اعتبار توکن
+                SigningCredentials = creds //کردنشیال بالا را در ساین این کردنشیال زدیم
             };
             var tokenHandler = new JwtSecurityTokenHandler();//یک توکن هندلر ساختیم
-            var token=tokenHandler.CreateToken(tokenDescriptor);// توکن را می سازیم
+            var token = tokenHandler.CreateToken(tokenDescriptor);// توکن را می سازیم
 
             return tokenHandler.WriteToken(token);//با استفاده ار توکن هندلر توکن جدید را نوشته و برمیگردانیم
 

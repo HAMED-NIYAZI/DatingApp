@@ -12,7 +12,7 @@ namespace DatingApp.Api.Controllers
         private readonly IUserService _userService;
         public UserController(IUserService userService)
         {
-            _userService=userService;
+            _userService = userService;
         }
         // GET: api/<UserController>
         [HttpGet]
@@ -29,7 +29,7 @@ namespace DatingApp.Api.Controllers
         [HttpGet("{userName}")]
         public async Task<IActionResult> Get(string userName)
         {
-            return Ok(await _userService.GetUserInformationAsync(userName));     
+            return Ok(await _userService.GetUserInformationAsync(userName));
         }
 
         // POST api/<UserController>
@@ -39,9 +39,29 @@ namespace DatingApp.Api.Controllers
         }
 
         // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut()]
+        public async Task<IActionResult> Put(UpdateMemberDto updateMemberDto)
         {
+            int userId = 2;
+            var result = await _userService.UpdateMember(updateMemberDto, userId);
+            if (result)
+            {
+                return new JsonResult(new
+                {
+                    Message = "Updated",
+                    StatusCode = 200,
+                    IsSuccess = true
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    message = "Has error",
+                    statusCode = 201,
+                    isSuccess = false
+                });
+            }
         }
 
         // DELETE api/<UserController>/5
